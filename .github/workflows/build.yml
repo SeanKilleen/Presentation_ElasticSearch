@@ -18,19 +18,18 @@ jobs:
       - name: "Install Node"
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 22.x
 
       - name: Install dependencies and Puppeteer
         working-directory: ./presentation
         run: |
           npm ci
+          sudo apt update
           sudo apt-get install libgbm-dev
-          npm i puppeteer --no-save
-
       - name: Build Marp slide deck
         working-directory: ./presentation
         run: |
-          CHROME_PATH=$(node -e "console.log(require('puppeteer').executablePath())") npm run build
+          npm run vercel-build
           touch ./public/.nojekyll
         env:
           # Recommend to set lang for your deck to get better rendering for Open Graph image
